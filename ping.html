@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ankara test</title>
+<style>body{background:#000;color:#fff;font:18px system-ui,sans-serif;padding:20px}p{margin:14px 0;word-break:break-word}</style></head>
+<body><h2>Ankara connection test</h2><div id="o"></div>
+<script>
+var U="https://sbsshbjlstcrqlfdwqct.supabase.co",K="sb_publishable_uQCLBJV1CRCg0D_WPCjgyg_eCj_TauK";
+function line(t){var p=document.createElement("p");p.textContent=t;document.getElementById("o").appendChild(p)}
+function run(n,f){return f().then(function(r){return r.text().then(function(x){line(n+": OK, HTTP "+r.status+" "+x.slice(0,90))})}).catch(function(e){line(n+": FAIL "+(e&&e.message?e.message:e))})}
+line("Page address: "+location.href);
+run("Test 1 (simple request)",function(){return fetch(U+"/rest/v1/?apikey="+K)})
+.then(function(){return run("Test 2 (with key header)",function(){return fetch(U+"/rest/v1/",{headers:{apikey:K}})})})
+.then(function(){return run("Test 3 (the real code check)",function(){return fetch(U+"/rest/v1/rpc/claim_code",{method:"POST",headers:{apikey:K,"Content-Type":"application/json"},body:JSON.stringify({p_code:"test",p_device:"testdevice1234"})})})})
+.then(function(){line("Done. Take a screenshot of this page.")});
+</script></body></html>
